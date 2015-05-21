@@ -1,0 +1,20 @@
+<span class="error" ng-hide="questions.length">Unable to get quiz questions. Sorry!</span>
+
+<div ng-show="questions.length">
+  <div class="questionContainer">
+    <p>{{ currentIndex + 1 + "/" + questions.length }}</p>
+    <p>You've answered {{ numCorrect }} questions correctly.</p>
+    <p>{{ currentQuestion.food }}</p>
+  </div>
+  
+  <div class="quizBtnContainer">
+  	<button type="button" ng-click="checkAnswer('derby')" id="btnLeft" class="btn btn-primary btn-lg" ng-disabled="questionAnswered">Derby</button>
+  	<button type="button" ng-click="checkAnswer('pregnant')" id="btnRight" class="btn btn-primary btn-lg" ng-disabled="questionAnswered">Pregnant</button>
+  </div>
+  
+  <div class="answerResult" ng-show="questionAnswered">
+    {{ isAnswerCorrect ? "Genius!" : "Nope" }}
+  </div>
+  
+  <button type="button" ng-click="getNextQuestion()" ng-show="questionAnswered" class="btn btn-primary btn-lg">Next &#65515;</button>
+</div>
