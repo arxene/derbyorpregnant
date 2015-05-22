@@ -1,3 +1,11 @@
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 body {
   font-size: 16px;
 }
@@ -7,12 +15,13 @@ blockquote {
     background-color: #ffefe5;
     color: #666;
     font-style: italic;
-    margin: 2em auto 2em;
+    margin: 1em auto 2em;
     padding-left: 15px;
     display: inline-block;
 }
 
 .quoter {
+  margin-top: .5em;
   display: block;
   font-style: normal;
 }
