@@ -34,7 +34,8 @@
   },
   {
     "answer": "derby",
-    "food": "Stopped at the store last night after practice to grab chocolate milk, because protein. I came out with chocolate milk, two kinds of cheese, and half a pound of smoked salmon. Because PROTEIN.",
+    "comment": "Stopped at the store last night after practice to grab chocolate milk, because protein. I came out with chocolate milk, two kinds of cheese, and half a pound of smoked salmon. Because PROTEIN.",
+    "food": "Stopped at the store last night after practice to grab chocolate milk... I came out with chocolate milk, two kinds of cheese, and half a pound of smoked salmon.",
     "name": "Critical Tits"
   },
   {

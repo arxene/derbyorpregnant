@@ -8,6 +8,7 @@ quizControllers.controller( 'InProgressCtrl', ['$scope', '$http', 'quizSvc',
     $scope.isAnswerCorrect = false;
     $scope.numCorrect = quizSvc.numCorrect;
     $scope.questions = [];
+    $scope.currentAnswer = "";
     
     /* Load list of questions */
     $http.get( 'quizQuestions.json' ).
@@ -29,6 +30,14 @@ quizControllers.controller( 'InProgressCtrl', ['$scope', '$http', 'quizSvc',
         quizSvc.numCorrect++;
         $scope.numCorrect = quizSvc.numCorrect;
       }
+      
+      var btnClass = $scope.isAnswerCorrect ? "btn-success" : "btn-danger";
+      var whichBtn = userAnswer === 'derby' ? "#btnLeft" : "#btnRight";
+      //document.getElementById( whichBtn ).className += btnClass;
+      // $( "p" ).last().addClass( "selected" );
+      $(whichBtn).addClass(btnClass);
+      
+      $scope.currentAnswer = userAnswer;
     };
     
     /* Load up the next question or end game if no more questions left */
@@ -38,6 +47,11 @@ quizControllers.controller( 'InProgressCtrl', ['$scope', '$http', 'quizSvc',
       if ( $scope.currentIndex < $scope.questions.length ) {
         $scope.currentQuestion = $scope.questions[ $scope.currentIndex ];
         $scope.questionAnswered = false;
+        
+        // reset button style
+        var btnClass = $scope.isAnswerCorrect ? "btn-success" : "btn-danger";
+        var whichBtn = $scope.currentAnswer === 'derby' ? "#btnLeft" : "#btnRight";
+        $(whichBtn).removeClass(btnClass);
       } else {
         $scope.endGame();
       }
@@ -53,4 +67,5 @@ quizControllers.controller( 'InProgressCtrl', ['$scope', '$http', 'quizSvc',
 quizControllers.controller( 'EndGameCtrl', ['$scope', 'quizSvc',
   function ( $scope, quizSvc ) {
     $scope.numCorrect = quizSvc.numCorrect;
+    quizSvc.numCorrect = 0; // set to 0 in case they play again
   }] );
