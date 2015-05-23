@@ -18,7 +18,8 @@
       <span class="quoter">{{ "-" + currentQuestion.name }}</span>
     </blockquote>
   </div>
+    
+  <button type="button" ng-click="getNextQuestion()" ng-show="questionAnswered && !gameOver" class="btn btn-primary btn-lg">Next &#65515;</button>
   
-  
-  <button type="button" ng-click="getNextQuestion()" ng-show="questionAnswered" class="btn btn-primary btn-lg">Next &#65515;</button>
+  <a ng-href="#/endgame" ng-show="gameOver">View your score</a>
 </div>
