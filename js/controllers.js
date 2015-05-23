@@ -6,7 +6,6 @@ quizControllers.controller( 'InProgressCtrl', ['$scope', '$http', 'quizSvc',
     $scope.currentIndex = 0;
     $scope.questionAnswered = false;
     $scope.isAnswerCorrect = false;
-    $scope.numCorrect = quizSvc.numCorrect;
     $scope.questions = [];
     $scope.currentAnswer = "";
     $scope.gameOver = false;
@@ -29,7 +28,6 @@ quizControllers.controller( 'InProgressCtrl', ['$scope', '$http', 'quizSvc',
       
       if ( $scope.isAnswerCorrect ) {
         quizSvc.numCorrect++;
-        $scope.numCorrect = quizSvc.numCorrect;
       }
       
       var btnClass = $scope.isAnswerCorrect ? "btn-success" : "btn-danger";

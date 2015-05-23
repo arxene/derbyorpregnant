@@ -25,3 +25,16 @@ blockquote {
   display: block;
   font-style: normal;
 }
+
+.answer-feedback {
+  margin-top: 1em;
+  font-size: 1.5em;
+}
+
+.answer-correct {
+  color: green;
+}
+
+.answer-wrong {
+  color: red;
+}

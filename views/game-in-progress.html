@@ -13,6 +13,8 @@
   </div>
   
   <div ng-show="questionAnswered">
+    <p class="answer-feedback" ng-class="isAnswerCorrect ? 'answer-correct' : 'answer-wrong'">{{ isAnswerCorrect ? "Correct" : "Wrong" }}</p>
+    
     <blockquote>
       <span ng-show="currentQuestion.comment">{{ currentQuestion.comment }}</span>
       <span class="quoter">{{ "-" + currentQuestion.name }}</span>
