@@ -29,13 +29,14 @@
   },
   {
     "answer": "pregnant",
-    "food": "I craved chocolate milk, lemonade, kettle chips, and cheeseburgers most of all. And ice cream.",
+    "comment": "I craved chocolate milk, lemonade, kettle chips, and cheeseburgers most of all. And ice cream.",
+    "food": "Chocolate milk, lemonade, kettle chips, and cheeseburgers most of all. And ice cream.",
     "name": "Ironcide"
   },
   {
     "answer": "derby",
     "comment": "Stopped at the store last night after practice to grab chocolate milk, because protein. I came out with chocolate milk, two kinds of cheese, and half a pound of smoked salmon. Because PROTEIN.",
-    "food": "Stopped at the store last night after practice to grab chocolate milk... I came out with chocolate milk, two kinds of cheese, and half a pound of smoked salmon.",
+    "food": "Stopped at the store to grab chocolate milk... I came out with chocolate milk, two kinds of cheese, and half a pound of smoked salmon.",
     "name": "Critical Tits"
   },
   {
@@ -45,13 +46,14 @@
   },
   {
     "answer": "pregnant",
-    "food": "I drank a gallon of OJ every day and I craved the Chicken Strip basket with texas toast, fries, and gravy from Dairy Queen.",
+    "comment": "I drank a gallon of OJ every day and I craved the Chicken Strip basket with texas toast, fries, and gravy from Dairy Queen.",
+    "food": "A gallon of OJ and the Chicken Strip basket with Texas toast, fries, and gravy from Dairy Queen.",
     "name": "Zooey Dash-in-hell"
   },
   {
     "answer": "pregnant",
     "comment": "When I was pregnant, every day I ate egg salad over a bed of spinach with a side of ice cream.",
-    "food": "Every day I ate egg salad over a bed of spinach with a side of ice cream.",
+    "food": "Egg salad over a bed of spinach with a side of ice cream.",
     "name": "Slyanide"
   },
   {
@@ -62,12 +64,14 @@
   },
   {
     "answer": "pregnant",
-    "food": "MILK! I drank milk with every meal.",
+    "comment": "MILK! I drank milk with every meal.",
+    "food": "MILK!",
     "name": "Megan McMahan"
   },
   {
     "answer": "pregnant",
-    "food": "Gummy bears, Cocoa Krispies, and ketchup which I do not usually enjoy.",
+    "comment": "Gummy bears, Cocoa Krispies, and ketchup which I do not usually enjoy.",
+    "food": "Gummy bears, Cocoa Krispies, and ketchup.",
     "name": "Camille Toad"
   },
   {
