@@ -10,16 +10,34 @@ quizControllers.controller( 'InProgressCtrl', ['$scope', '$http', 'quizSvc',
     $scope.currentAnswer = "";
     $scope.gameOver = false;
     
-    /* Load list of questions */
-    $http.get( 'quizQuestions.json' ).
-      success( function( data ) {
-        $scope.questions = data;
-        $scope.currentQuestion = $scope.questions[0];
-      } ).
-      error( function( data ) {
-        console.log( "Error fetching questions." );
-      } );
-  
+    /**
+     * Load list of 10 randomized questions
+     * Shuffle list then grab first 10 items, or all if less than 10 items exist
+     */
+    $scope.loadQuestions = function() {
+      $http.get( 'quizQuestions.json' ).
+        success( function( data ) {
+          var shuffledQuestions = shuffle( data );
+          
+          $scope.questions = shuffledQuestions.length >= 10 ? shuffledQuestions.slice( 0, 10 ) : shuffledQuestions;
+          $scope.currentQuestion = $scope.questions[0];
+        } ).
+        error( function( data ) {
+          console.log( "Error fetching questions." );
+        } );
+    };
+    $scope.loadQuestions(); // run this right away when game-in-progress.html loads
+    
+    // Fisher-Yates shuffle algorithm to randomly shuffle array
+    function shuffle( array ) {
+      for ( var i = array.length - 1; i > 0; i-- ) {
+        var j = Math.floor( Math.random() * ( i + 1 ) );
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+      }
+      return array;
+    }
   
     /* Check whether their answer was right */
     $scope.checkAnswer = function( userAnswer ) {
