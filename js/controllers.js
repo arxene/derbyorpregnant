@@ -1,7 +1,7 @@
 var quizControllers = angular.module( 'quizControllers', [] );
 
-quizControllers.controller( 'InProgressCtrl', ['$scope', '$http', 'quizSvc',
-  function( $scope, $http, quizSvc ) {
+quizControllers.controller( 'InProgressCtrl', ['$scope', '$http', 'questionLoadSvc',
+  function( $scope, $http, questionLoadSvc ) {
     $scope.currentQuestion = [];
     $scope.currentIndex = 0;
     $scope.questionAnswered = false;
@@ -14,20 +14,32 @@ quizControllers.controller( 'InProgressCtrl', ['$scope', '$http', 'quizSvc',
      * Load list of 10 randomized questions
      * Shuffle list then grab first 10 items, or all if less than 10 items exist
      */
-    $scope.loadQuestions = function() {
-      $http.get( 'quizQuestions.json' ).
-        success( function( data ) {
-          var shuffledQuestions = shuffle( data );
+    $scope.initGame = function() {
+      // only fetch JSON question file once
+      if ( !questionLoadSvc.questions.length ) {
+        var svcResult = questionLoadSvc.async().then( function( d ) {
+          questionLoadSvc.questions = d;
           
-          $scope.questions = shuffledQuestions.length >= 10 ? shuffledQuestions.slice( 0, 10 ) : shuffledQuestions;
-          $scope.currentQuestion = $scope.questions[0];
-        } ).
-        error( function( data ) {
-          console.log( "Error fetching questions." );
+          /* shuffle and return here on first load of questions because if questions
+           * are waited to be shuffled outside of this async block, then it tries to shuffle
+           * before the questions have been loaded
+           */ 
+          shuffleQuestions();
+          return true;
         } );
+      }
+      
+      shuffleQuestions();
     };
-    $scope.loadQuestions(); // run this right away when game-in-progress.html loads
+    $scope.initGame(); // run right away when game-in-progress.html loads
     
+    function shuffleQuestions() {
+      // shuffle the questions every time to get a new random list of 10
+      var shuffledQuestions = shuffle( questionLoadSvc.questions );
+      $scope.questions = shuffledQuestions.length >= 10 ? shuffledQuestions.slice( 0, 10 ) : shuffledQuestions;
+      $scope.currentQuestion = $scope.questions[0];
+    }
+   
     // Fisher-Yates shuffle algorithm to randomly shuffle array
     function shuffle( array ) {
       for ( var i = array.length - 1; i > 0; i-- ) {
@@ -45,7 +57,7 @@ quizControllers.controller( 'InProgressCtrl', ['$scope', '$http', 'quizSvc',
       $scope.isAnswerCorrect = userAnswer === $scope.currentQuestion.answer;
       
       if ( $scope.isAnswerCorrect ) {
-        quizSvc.numCorrect++;
+        questionLoadSvc.numCorrect++;
       }
       
       var btnClass = $scope.isAnswerCorrect ? "btn-success" : "btn-danger";
@@ -73,8 +85,8 @@ quizControllers.controller( 'InProgressCtrl', ['$scope', '$http', 'quizSvc',
     };
   }] );
   
-quizControllers.controller( 'EndGameCtrl', ['$scope', 'quizSvc',
-  function ( $scope, quizSvc ) {
-    $scope.numCorrect = quizSvc.numCorrect;
-    quizSvc.numCorrect = 0; // set to 0 in case they play again
+quizControllers.controller( 'EndGameCtrl', ['$scope', 'questionLoadSvc',
+  function ( $scope, questionLoadSvc ) {
+    $scope.numCorrect = questionLoadSvc.numCorrect;
+    questionLoadSvc.numCorrect = 0; // set to 0 in case they play again
   }] );

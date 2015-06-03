@@ -25,8 +25,22 @@ quizApp.config(['$routeProvider',
       });
   }]);
 
-quizApp.factory('quizSvc', function() {
-  var quizResults = {numCorrect: 0};
-  
-  return quizResults; 
+quizApp.factory('questionLoadSvc', function($http) {
+  var myService = {
+    numCorrect: 0,
+    
+    questions: [],
+    
+    async: function() {
+      var promise = $http.get( 'quizQuestions.json' ).then( function( response ) {
+        console.log( response );
+        return response.data;
+      } );
+      
+      return promise;
+    }
+  };
+ 
+  return myService;
 });
+
