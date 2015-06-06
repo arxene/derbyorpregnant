@@ -17,6 +17,9 @@ quizApp.config(['$routeProvider',
         templateUrl: 'views/end-game.html',
         controller: 'EndGameCtrl'
       }).
+      when('/addfood', {
+        templateUrl: 'views/add-food.php'
+      }).
       when('/404', {
         templateUrl: 'views/404.html'
       }).

@@ -11,13 +11,13 @@ body {
 }
 
 blockquote {
-    border-left: 6px solid #ff6600;
-    background-color: #ffefe5;
-    color: #666;
-    font-style: italic;
-    margin: 1em auto 2em;
-    padding-left: 15px;
-    display: inline-block;
+  border-left: 6px solid #ff6600;
+  background-color: #ffefe5;
+  color: #666;
+  font-style: italic;
+  margin: 1em auto 2em;
+  padding-left: 15px;
+  display: inline-block;
 }
 
 .quoter {
@@ -38,3 +38,8 @@ blockquote {
 .answer-wrong {
   color: red;
 }
+
+a {
+  display: block;  
+}
+
