@@ -27,25 +27,30 @@
         try {
           // connect to the database
           $dbName = "derbyorpregnant";
-          $username = "root";
-          $password = "";
+          $username = "dorp_admin";
+          $password = "whfs991";
           $dbh = new PDO( "mysql:host=localhost;dbname=$dbName", $username, $password );
           
           // turning on exceptions for query errors
           $dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
           // now that we're connected to the database, get form fields and insert into database
-          $name = mysql_real_escape_string( $_POST['submissionName'] );
-          $food = mysql_real_escape_string( $_POST['submissionFood'] );
-          $option = mysql_real_escape_string( $_POST['submissionOption'] );
-          $insertQuery = "INSERT INTO user_submissions VALUES (DEFAULT, '$name', '$food', '$option')";
-          $rowsAffected = $dbh->exec( $insertQuery );
+          $name = $_POST['submissionName'];
+          $food = $_POST['submissionFood'];
+          $option = $_POST['submissionOption'];
 
-          if ( $rowsAffected === 1 ) {
-            echo "<p>Thanks for the submission, " . stripslashes( $name ) . "!</p>";
+          $insertQuery = "INSERT INTO user_submissions
+            VALUES (DEFAULT, :name, :food, :option)";
+          $stmt = $dbh->prepare( $insertQuery );
+          $stmt->bindParam( ':name', $name, PDO::PARAM_STR );
+          $stmt->bindParam( ':food', $food, PDO::PARAM_STR );
+          $stmt->bindParam( ':option', $option, PDO::PARAM_STR );
+
+          if ( $stmt->execute() ) {
+            echo "<p>Thanks for the submission, " . $name . "!</p>";
             echo '<a href="http://archene.com">Return to Home</a>';
 
-            //display all submissions
+            // display all submissions
             $selectQuery = "SELECT `name`, `food`, `option` FROM `user_submissions`";
             $submissions = $dbh->query($selectQuery);
 
