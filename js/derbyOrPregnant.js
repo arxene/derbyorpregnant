@@ -35,8 +35,7 @@ quizApp.factory('questionLoadSvc', function($http) {
     questions: [],
     
     async: function() {
-      var promise = $http.get( 'quizQuestions.json' ).then( function( response ) {
-        console.log( response );
+      var promise = $http.post('fetch_questions.php').then( function( response ) {
         return response.data;
       } );
       
