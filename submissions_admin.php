@@ -47,7 +47,7 @@
             <th ng-click="edit()">Food</th>
             <th ng-click="edit()">Comment</th>
             <th>Option</th>
-            <th><input type="checkbox"> Select All</th>
+            <th><input type="checkbox" onclick="selectAll( this )"></th>
           </tr>
         </thead>
         <tbody>
@@ -88,5 +88,7 @@
       ?>
 
     </div><!-- container -->
+    
+    <script src="js/submissions.js"></script>
   </body>
 </html>
