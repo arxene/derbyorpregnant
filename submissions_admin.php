@@ -26,20 +26,20 @@
         try {
           // connect to the database
           $dbName = "derbyorpregnant";
-          $username = "root";
-          $password = "";
+          $username = "dorp_admin"; // root for local
+          $password = "whfs991"; // blank for local
           $dbh = new PDO( "mysql:host=localhost;dbname=$dbName", $username, $password );
           
           // turning on exceptions for query errors
           $dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
           
-          // display all submissions
-          $selectQuery = "SELECT `name`, `food`, `option` FROM `user_submissions`";
+          // display all submissions that haven't been marked approved or denied
+          $selectQuery = "SELECT `name`, `food`, `option` FROM `user_submissions` WHERE status='new'";
           $submissions = $dbh->query($selectQuery);
       
           if ( $submissions ) {
       ?>
-      
+
       <table class="table">
         <thead>
           <tr>
@@ -57,10 +57,10 @@
             foreach ( $submissions as $row ) {
           ?>          
           <tr>
-            <td><?php echo $row['name'] ?></td>
-            <td><?php echo $row['food'] ?></td>
-            <td></td>
-            <td><?php echo $row['option'] ?></td>
+            <td class="nameCol"><?php echo $row['name'] ?></td>
+            <td class="foodCol"><?php echo $row['food'] ?></td>
+            <td class="commentCol"></td>
+            <td class="optionCol"><?php echo $row['option'] ?></td>
             <td><input type="checkbox"></td>
           </tr>
           <?php
@@ -69,9 +69,11 @@
           
         </tbody>
       </table>
-
-      <input type="button" value="Approve" />
-      <input type="button" value="Delete" />
+  
+      <input type="submit" name="approve" value="Approve" onclick="processSubmission('approve')" />
+      <input type="submit" name="remove" value="Remove" onclick="processSubmission('remove')" />
+      
+      <div class="dbResult"></div>
       
       <?php
           // end if ( $submissions )
@@ -82,7 +84,7 @@
           // closing database
           $dbh = null;
         } catch( PDOException $e ) {
-          echo $e -> getMessage();
+          echo $e->getMessage();
         }
       
       ?>
