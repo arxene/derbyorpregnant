@@ -82,6 +82,8 @@
         }
       }
       ?>
+      
+      <a href="submissions_admin.php">Administrator access to user submissions</a>
     </div><!-- container -->
   </body>
 </html>
