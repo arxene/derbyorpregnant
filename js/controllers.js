@@ -9,6 +9,7 @@ quizControllers.controller( 'InProgressCtrl', ['$scope', '$http', 'questionLoadS
     $scope.questions = [];
     $scope.currentAnswer = "";
     $scope.gameOver = false;
+    $scope.errorMsg = "";
     
     /**
      * Load list of 10 randomized questions
@@ -18,6 +19,12 @@ quizControllers.controller( 'InProgressCtrl', ['$scope', '$http', 'questionLoadS
       // only fetch JSON question file once
       if ( !questionLoadSvc.questions.length ) {
         var svcResult = questionLoadSvc.async().then( function( d ) {
+          if (typeof d === 'string' && d.toLowercase().startsWith("sqlstate"))
+          {
+            $scope.errorMsg = "Unable to get quiz questions. Sorry!";
+            return false;
+          }
+          
           questionLoadSvc.questions = d;
           
           /* shuffle and return here on first load of questions because if questions
