@@ -1,3 +1,7 @@
+[Play the game](http://archene.com/quiz)
+[Add a quiz question](http://archene.com/quiz/#/addfood)
+[Admin panel for user submissions](http://archene.com/quiz/submissions_admin.php)
+
 ## Synopsis
 
 Quiz game testing whether players can tell the difference between athletes' and pregnant people's food cravings.
