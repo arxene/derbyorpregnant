@@ -1,3 +1,44 @@
+window.onload = function() {
+  // Only enable submit buttons if at least one tbody checkbox is checked
+  var buttons = document.querySelectorAll("input[type='submit']");
+  
+  /**
+   * When checkbox is checked, check if it is being checked or unchecked
+   * If it's being checked, enable buttons
+   * Else If it's being unchecked, seee if any of the other tbody checkboxes are checked
+   * 
+   * If Select All is being checked, enable buttons 
+   */
+  var checkboxes = document.querySelectorAll( "tbody input[type='checkbox']" );
+  
+  // need to look for click events. Might also need to check for spacebar key
+  // event if they're not using a mouse
+  for (var i = 0; i < checkboxes.length; ++i) {
+    checkboxes[i].onclick = function() {
+      if (this.checked) {
+        for (var j = 0; j < buttons.length; ++j) {
+          buttons[j].disabled = false;
+        }
+      } else if ( (function() { // if being unchecked, check if any other row is checked
+        // need to get list of checkboxes again since this list can change
+        // due to updateUi() removing elements
+        var submissionCheckboxes = document.querySelectorAll( "tbody input[type='checkbox']" );
+        
+        for (var k = 0; k < submissionCheckboxes.length; ++k) {
+          if (submissionCheckboxes[k].checked) {
+            return false;
+          }
+        }
+        return true;
+      })() ) {
+        for (var j = 0; j < buttons.length; ++j) {
+          buttons[j].disabled = true;
+        }
+      }
+    };
+  }
+};
+
 /**
  * Checks/unchecks all  
  */
@@ -8,6 +49,12 @@ function selectAll( selectAllBtn ) {
   // if it's unchecked, uncheck all
   for ( var i = 0; i < checkboxes.length; ++i ) {
     checkboxes[i].checked = selectAllBtn.checked;
+  }
+  
+  // update Approve and Deny button disabled state
+  var buttons = document.querySelectorAll("input[type='submit']");
+  for (var j = 0; j < buttons.length; ++j) {
+    buttons[j].disabled = !selectAllBtn.checked;
   }
 }
 
@@ -20,7 +67,10 @@ function selectAll( selectAllBtn ) {
 function processSubmission(action) {
   var xhr = getXmlHttpRequest();
   
-  xhr.send("action=" + action + "&items=" + getCheckedItemsJson());
+  var checkedItems = getCheckedItemsJson();
+  
+  var sendString = "action=" + action + "&items=" + getCheckedItemsJson();
+  xhr.send(sendString);
 }
 
 function getCheckedItemsJson() {
@@ -103,6 +153,12 @@ function updateUi() {
   
   for (var i = 0; i < checkedRows.length; ++i) {
     checkedRows[i].remove(); // remove this row from the UI
+    
+    // disable submit buttons since nothing should be checked now
+    var buttons = document.querySelectorAll("input[type='submit']");
+    for (var j = 0; j < buttons.length; ++j) {
+      buttons[j].disabled = true;
+    }
   }
 }
 
