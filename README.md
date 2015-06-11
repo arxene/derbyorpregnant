@@ -1,5 +1,7 @@
 [Play the game](http://archene.com/quiz)
+
 [Add a quiz question](http://archene.com/quiz/#/addfood)
+
 [Admin panel for user submissions](http://archene.com/quiz/submissions_admin.php)
 
 ## Synopsis
