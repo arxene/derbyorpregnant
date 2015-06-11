@@ -27,8 +27,8 @@
         try {
           // connect to the database
           $dbName = "derbyorpregnant";
-          $username = "dorp_admin";
-          $password = "whfs991";
+          $username = "root";
+          $password = "";
           $dbh = new PDO( "mysql:host=localhost;dbname=$dbName", $username, $password );
           
           // turning on exceptions for query errors
@@ -39,14 +39,9 @@
           $food = $_POST['submissionFood'];
           $option = $_POST['submissionOption'];
 
-          $insertQuery = "INSERT INTO user_submissions
-            VALUES (DEFAULT, :name, :food, :option)";
-          $stmt = $dbh->prepare( $insertQuery );
-          $stmt->bindParam( ':name', $name, PDO::PARAM_STR );
-          $stmt->bindParam( ':food', $food, PDO::PARAM_STR );
-          $stmt->bindParam( ':option', $option, PDO::PARAM_STR );
+          $stmt = $dbh->prepare("INSERT INTO user_submissions VALUES (DEFAULT, ?, ?, ?, 'new')");
 
-          if ( $stmt->execute() ) {
+          if ( $stmt->execute( array($name, $food, $option) ) ) {
             echo "<p>Thanks for the submission, " . $name . "!</p>";
             echo '<a href="http://archene.com">Return to Home</a>';
 
