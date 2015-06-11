@@ -70,8 +70,8 @@
         </tbody>
       </table>
   
-      <input type="submit" name="approve" value="Approve" onclick="processSubmission('approve')" />
-      <input type="submit" name="remove" value="Remove" onclick="processSubmission('remove')" />
+      <input type="submit" class="btn btn-info" name="approve" value="Approve" onclick="processSubmission('approve')" disabled />
+      <input type="submit" class="btn btn-danger" name="remove" value="Remove" onclick="processSubmission('remove')" disabled />
       
       <div class="dbResult"></div>
       
