@@ -7,17 +7,20 @@ if ($_POST) {
   $items = $_POST["items"];
   
   if ( isset( $action, $items ) ) {
+    dbConnect();
+    
     if ( $action == "approve" ) {
       approve( json_decode( $items ) );
     } elseif ( $action == "remove" ) {
-      remove( json_decode($items) );
+      remove( json_decode( $items ) );
     }
   }
 }
 
 
 /**
- * @param array $itemsToApprove
+ * @param array $itemsToApprove expects an array of objects with properties
+ * name, food, comment, and option
  * @return boolean whether the itemsToApprove were added to the quiz_questions
  * table
  * @throws PDOException
@@ -25,16 +28,14 @@ if ($_POST) {
 function approve( $itemsToApprove ) {
   $wasInsertSuccessful = false;
   
-  dbConnect();
-  
   try {
     // prepare SQL INSERT statement
     $sql = array();
     foreach( $itemsToApprove as $currentItem ) {
-      $sql[] = "(DEFAULT,'" . mysql_real_escape_string($currentItem->name) .
-        "','" . mysql_real_escape_string($currentItem->food) .
-        "','" . mysql_real_escape_string($currentItem->comment) .
-        "','" . mysql_real_escape_string($currentItem->option) . "')";
+      $sql[] = "(DEFAULT,'" . $currentItem->name .
+        "','" . $currentItem->food .
+        "','" . $currentItem->comment .
+        "','" . $currentItem->option . "')";
     }
     $sqlString = implode( ",", $sql );
     $insertQuery = "INSERT INTO quiz_questions VALUES " . $sqlString;
@@ -43,9 +44,18 @@ function approve( $itemsToApprove ) {
     global $dbh;
     $wasInsertSuccessful = $dbh->query( $insertQuery );
     if ( $wasInsertSuccessful ) {
-      updateStatus($itemsToApprove, 'approved');
+      $itemsNotApproved = updateStatus($itemsToApprove, 'approved');
       
-      echo "Successfully approved ".count($itemsToApprove)." submissions.";
+      if (count($itemsNotApproved) > 0) {
+        echo "Unable to update status of the following items:\n";
+        foreach ($itemsNotUpdated as $item) {
+          echo implode(", ", $item) . "\n";
+        }
+      }
+      
+      echo "Successfully approved " .
+        (count($itemsToApprove) - count($itemsNotApproved)) .
+        " submissions.";
     } else {
       echo "Unable to approve submissions.";
     }
@@ -58,43 +68,63 @@ function approve( $itemsToApprove ) {
   return $wasInsertSuccessful;
 }
 
+
+/**
+ * Set status in table user_submissions to 'removed' for each item passed in
+ * 
+ * @param array $itemsToRemove expects an array of objects with properties
+ * name, food, comment, and option
+ */
 function remove( $itemsToRemove ) {
-  print_r( $itemsToRemove );
+  $itemsNotRemoved = updateStatus($itemsToRemove, 'removed');
+  
+  if (count($itemsNotRemoved) > 0) {
+    echo "Unable to update status of the following items:\n";
+    foreach ($itemsNotRemoved as $item) {
+      echo "Name: " . $item->name . "\n";
+      echo "Question: " . $item->food . "\n\n";
+    }
+  }
+  
+  echo "Successfully denied " .
+    (count($itemsToRemove) - count($itemsNotRemoved)) .
+    " submissionszzzz.";
 }
 
 /**
  * @param array $itemsToUpdateStatus which items to UPDATE
  * @param string $status should be either 'approved' or 'denied'
- * @return bool whether it was able to run the UPDATE successfully
+ * @return array which items could not be updated
  */
 function updateStatus( $itemsToUpdate, $status ) {
+  $failedUpdates = array();  
+    
   try {
     global $dbh;
     
     // prepare SQL UPDATE statement to change user_submission status
     foreach( $itemsToUpdate as $currentItem ) {
-      $updateQuery = "UPDATE user_submissions SET status='" .
-        mysql_real_escape_string($status) . "' WHERE name = '" .
-        mysql_real_escape_string($currentItem->name) . "'";
-        
-      if (!$dbh->query( $updateQuery )) {
-        echo "Unable to update status of user submission from " .
-          $currentItem->name . ".";
+      $updateQuery = $dbh->prepare("UPDATE user_submissions SET status = ? WHERE name = ?");
+      
+      if (!$updateQuery->execute( array($status, $currentItem->name ) )) {
+        $failedUpdates[] = $currentItem;
       }
     }
   } catch (PDOException $e) {
     echo $e->getMessage();
   }
+  
+  return $failedUpdates;
 }
 
 function dbConnect() {
   try {
     // connect to the database
     $dbName = "derbyorpregnant";
-    $username = "dorp_admin";
-    $password = "whfs991";
+    $username = "root";
+    $password = "";
     global $dbh;
-    $dbh = new PDO( "mysql:host=localhost;dbname=$dbName", $username, $password );
+    $dbh = new PDO( "mysql:host=localhost;dbname=$dbName;charset=utf8", $username, $password );
     
     // turning on exceptions for query errors
     $dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );

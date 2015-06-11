@@ -26,8 +26,8 @@
         try {
           // connect to the database
           $dbName = "derbyorpregnant";
-          $username = "dorp_admin"; // root for local
-          $password = "whfs991"; // blank for local
+          $username = "root"; // root for local
+          $password = ""; // blank for local
           $dbh = new PDO( "mysql:host=localhost;dbname=$dbName", $username, $password );
           
           // turning on exceptions for query errors
